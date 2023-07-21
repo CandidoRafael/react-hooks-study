@@ -1,0 +1,2 @@
+export const LOAD_POSTING = 'POSTS_LOADING'
+export const POSTS_SUCCESS = 'POSTS_SUCCESS'

@@ -1,0 +1,77 @@
+// import { useCallback, useEffect, useMemo, useState } from 'react';
+// import './App.css';
+// import logo from './logo.svg';
+// import Button from './Button';
+
+//   // const fnEvent = () => {
+//   //   console.log('clicado')
+//   // }
+
+//  function App() {
+//    /* O useState manipula o estado no componente podendo setar novos valores */
+  
+//   // const [reverse, setReverse] = useState(false)
+//   // const [counter, setCounter] = useState(0)
+//   // const reverseClass = reverse ? 'reverse' : '';
+
+//   // const handleIncrement = () => {
+//   //   setCounter(counter + 1)
+//   // }
+  
+//   // const handleClick = () => {
+//   //     setReverse(!reverse)
+//   //     handleIncrement()
+//   // }
+
+
+//   // UseEffect()  simula os lifescycle methods ( ComponentDidUpdate, Month, Unmonth )
+
+//   const [counter, setCounter] = useState(0)
+//   console.log('Pai renderizou')
+//   // ComponentDidUpdate - executa toda vez que o componente atualiza
+//   // useEffect(() => {
+//   //     console.log('componentDidUpdate')
+//   // })
+
+//   // ComponentDidMount - executa uma vez , se não tiver dependencias no array
+//   // useEffect(() => {
+//   //     console.log('componentDidMount')
+//   // },[])
+
+//   // Com dependencia - executa toda vez que a dependencia mudar
+//   // useEffect(() => {
+//   //     console.log('contador mudou para ', counter)
+//   // },[counter])
+
+
+//   // useEffect(() => {
+//   //   document.querySelector("h1")?.addEventListener("click", fnEvent)
+    
+//   //   // ComponentWillUMount - limpeza 
+//   //   return () => {
+//   //     document.querySelector('h1').removeEventListener('click', fnEvent)
+//   //   }
+//   // }, [])
+
+
+//   // O useCallback serve para fazer um cache de funçoes que não mudam
+//   // Usado para evitar renderizações desnecessarias
+//   // Utilizado em performance de funções mais complexas
+//   // Tomar cuidado ao usar o useCallback() 
+//   const incrementCounter = useCallback((num) => {
+//     setCounter((c) => c + num)
+//   },[])
+
+//   return (
+//       <div className="App">
+//           <h1>Oi</h1>    
+//           <h2>Contador c2 {counter}</h2>
+//           <button type='button' onClick={() => setCounter(counter + 1)}>+</button>
+
+//           {/* o filho nao sera renderizado de forma desnecessaria */}
+//           {useMemo(() => <Button incrementCounter={incrementCounter}/>, [incrementCounter])} 
+//       </div>
+//   );
+// }
+
+// export default App;

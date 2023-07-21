@@ -1,0 +1,49 @@
+import './App.css';
+import React, { useReducer } from 'react';
+
+const globalState = {
+    title: 'O titulo do contexto',
+    body: 'O body do contexto',
+    counter: 0
+}
+
+// UseReducer
+// Ele é parecido com o useState()
+// Usado para trabalhar com estados complexos
+
+
+const reducer = (state, action) => {
+  // eslint-disable-next-line default-case
+  switch (action.type) {
+    case 'muda' : {
+      console.log('chamou muda')
+      return { ...state, title: action.payload }
+    }
+      case 'inverter': {
+        console.log('inverteu');
+        const { title } = state;
+        return { ...state, title: title.split('').reverse().join('')
+       }
+      }
+  }
+
+  return { ...state };
+}
+
+ function App() {
+  // Voce passa uma funçao primeiro e depois o estado
+  // O state, é a variavel que armazena , e o dispatch é a funçao
+  // Que dispara o evento
+    const [state, dispatch] = useReducer(reducer, globalState);
+    const { counter, body, title } = state;
+
+    return (
+      <div className='App'>
+        <h2>{title} {counter}</h2>
+        <button onClick={() => dispatch({ type: 'inverter' })}>CLick</button>
+        <button onClick={() => dispatch({ type: 'muda', payload: new Date().toLocaleString('pt-BR') })}>Muda</button>
+      </div>
+    )
+}
+
+export default App;

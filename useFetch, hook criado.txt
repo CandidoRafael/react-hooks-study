@@ -1,0 +1,105 @@
+
+import "./styles.css";
+import React, { useEffect, useRef, useState } from "react";
+
+const isObjctEqual = (ObjA, ObjB) => {
+  return JSON.stringify(ObjA) === JSON.stringify(ObjB);
+};
+
+
+//Criaçao do hook aqui 
+const useFetch = (url, options) => {
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  const urlRef = useRef(url);
+  const optionsRef = useRef(options);
+
+  useEffect(() => {
+    let changed = false;
+
+    if (!isObjctEqual(url, urlRef.current)) {
+      urlRef.current = url;
+      changed = true;
+    }
+
+    if (!isObjctEqual(options, optionsRef.current)) {
+      optionsRef.current = options;
+      changed = true;
+    }
+
+    if (changed) {
+      setShouldLoad((s) => !s);
+    }
+  }, [url, options]);
+
+  useEffect(() => {
+    console.log("carregou o effect");
+    console.log(optionsRef.current.headers);
+
+    setLoading(true);
+
+    const fetchData = async () => {
+      //Esperar 5 segundos para executar
+      await new Promise((r) => setTimeout(r, 2000));
+      try {
+        const result = await fetch(urlRef.current, optionsRef.current);
+        const jsonResult = await result.json();
+        setResult(jsonResult);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [shouldLoad]);
+
+  return [result, loading];
+};
+
+// App.jsx
+function App() {
+  const [postId, setPostId] = useState("");
+  const [result, loading] = useFetch(
+    //Quando o id mudar ira fazer uma nova requisao 
+    "https://jsonplaceholder.typicode.com/posts/" + postId,
+    { headers: { abc: "1" + postId } }
+  );
+
+  useEffect(() => {
+    console.log(postId);
+  }, [postId]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  const handleClick = (id) => {
+    setPostId(id);
+  };
+
+  if (!loading && result) {
+    return (
+      <div>
+        {result?.length > 0 ? (
+          result.map((p) => (
+            <div key={p.id} onClick={() => handleClick(p.id)}>
+              <h2>{p.title}</h2>
+            </div>
+          ))
+        ) : (
+          <div onClick={() => handleClick("")}>
+            <h2>{result.title}</h2>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return <div>oi</div>;
+}
+
+export default App;

@@ -1,0 +1,70 @@
+import './App.css';
+import React, { createContext, useContext, useReducer } from 'react';
+
+
+// Data.js
+export const globalState = {
+    title: 'O titulo do contexto',
+    body: 'O body do contexto',
+    counter: 0
+}
+
+export const actions = {
+  CHANGE_TITLE: "CHANGE_TITLE"
+}
+
+// UseReducer
+// Ele é parecido com o useState()
+// Usado para trabalhar com estados complexos
+
+// reducer.js 
+export const reducer = (state, action) => {
+  
+  switch (action.type) {
+    case action.CHANGE_TITLE: {
+      console.log('mudou o titulo')
+      return { ...state, title: 'Qualquer coisa' }
+    }
+  }
+
+  return {...state }
+}
+
+
+
+
+// AppContext.jsx
+export const Context = createContext();
+export const AppContext = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, globalState);
+
+  const changeTitle = ( ) => {
+    console.log(state)
+    dispatch({ type: actions.CHANGE_TITLE })
+  }
+
+  return <Context.Provider value={{ state, changeTitle}}>{children}</Context.Provider>
+}
+
+//h1 /index.jsx
+
+export const H1 = () => {
+  const context = useContext(Context);
+
+  return <h1 onClick={() => context.changeTitle()}>{context.state.title}</h1>
+}
+
+// App.jsx
+ function App() {
+
+    return (
+      <AppContext>
+           <div className='App'>
+              <H1 />
+          </div>
+      </AppContext>
+     
+    )
+}
+
+export default App;
